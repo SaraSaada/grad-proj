@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>التسجيل — Grow</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    :root {
+      --brand: #3b82f6;
+      --brand-600: #2563eb;
+      --brand-700: #1e40af;
+      --ink: #0f172a;
+      --muted: #475569;
+      --bg: #f0f9ff;
+      --white: #ffffff;
+      --border: rgba(0, 0, 0, 0.1);
+      --success: #d1fae5;
+      --success-text: #065f46;
+    }
+    * {
+      box-sizing: border-box;
+      font-family: 'Cairo', sans-serif;
+    }
+    body {
+      margin: 0;
+      background-color: var(--bg);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 10px 0;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(8px);
+    }
+    .navbar.scrolled {
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      padding: 5px 0;
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+      max-width: 1200px;
+      margin: auto;
+      padding: 0 20px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-600));
+      box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      transition: transform 0.3s ease;
+    }
+    .brand:hover .logo {
+      transform: rotate(15deg) scale(1.1);
+    }
+    .brand-name {
+      color: var(--ink);
+      font-weight: 800;
+      font-size: 1.25rem;
+      transition: color 0.3s ease;
+    }
+    .brand:hover .brand-name {
+      color: var(--brand-600);
+    }
+    .btn {
+      border: 1px solid var(--border);
+      background: transparent;
+      padding: 0.65rem 1rem;
+      border-radius: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      color: var(--ink);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--brand-600), var(--brand-700));
+      color: var(--white);
+      border: none;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-primary::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0));
+      transform: translateX(-100%);
+      transition: transform 0.6s ease;
+    }
+    .btn-primary:hover::after {
+      transform: translateX(100%);
+    }
+    .btn-primary:hover {
+      filter: brightness(1.1);
+      box-shadow: 0 6px 16px rgba(30, 64, 175, 0.3);
+    }
+    main {
+      max-width: 500px;
+      margin: 100px auto;
+      background: var(--white);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    main::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 100%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0) 70%);
+      z-index: 0;
+    }
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 25px;
+      position: relative;
+      z-index: 1;
+    }
+    .tab {
+      flex: 1;
+      padding: 12px;
+      text-align: center;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 700;
+      background: var(--bg);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .tab:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .tab.active {
+      background: linear-gradient(135deg, var(--brand-600), var(--brand-700));
+      color: var(--white);
+      border-color: var(--brand-600);
+      box-shadow: 0 4px 12px rgba(30, 64, 175, 0.2);
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      position: relative;
+      z-index: 1;
+    }
+    input, select {
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+    .success-box {
+      background: var(--success);
+      color: var(--success-text);
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 15px;
+      display: none;
+      border-left: 4px solid var(--success-text);
+    }
+    /* fade-up animation */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .fade-up {
+      opacity: 0;
+      animation: fadeUp 0.6s ease-out forwards;
+    }
+    .delay-1 { animation-delay: 0.2s; }
+    .delay-2 { animation-delay: 0.4s; }
+    .delay-3 { animation-delay: 0.6s; }
+  </style>
+</head>
+<body>
+  <header class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a class="brand" href="/">
+        <span class="logo">G</span>
+        <span class="brand-name">Grow</span>
+      </a>
+      <nav>
+        <a class="btn" href="/login.html">تسجيل الدخول</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="fade-up">
+    <div class="tabs delay-1">
+      <div class="tab active" data-tab="student">تسجيل الطالب</div>
+      <div class="tab" data-tab="teacher">تسجيل المعلم</div>
+    </div>
+
+    <form id="student-form" class="delay-2">
+      <input type="text" placeholder="الاسم الكامل" required />
+      <input type="text" placeholder="رقم الهوية" required />
+      <input type="date" placeholder="تاريخ الميلاد" required />
+      <select required>
+        <option value="">اختر آخر مرحلة دراسية</option>
+        <option>الصف الأول</option>
+        <option>الصف الثاني</option>
+        <option>الصف الثالث</option>
+        <option>الصف الرابع</option>
+        <option>الصف الخامس</option>
+        <option>الصف السادس</option>
+        <option>الصف السابع</option>
+        <option>الصف الثامن</option>
+        <option>الصف التاسع</option>
+        <option>الصف العاشر</option>
+        <option>الصف الحادي عشر</option>
+      </select>
+      <input type="password" placeholder="كلمة المرور" required />
+      <input type="password" placeholder="تأكيد كلمة المرور" required />
+      <button type="submit" class="btn btn-primary">تسجيل</button>
+      <div class="success-box">
+        <i class="fas fa-check-circle"></i> شكراً للتسجيل في منصة Grow. طلبك قيد المراجعة وسوف نعلمك عبر الإيميل الشخصي.
+      </div>
+    </form>
+
+    <form id="teacher-form" style="display:none" class="delay-2">
+      <input type="text" placeholder="الاسم الكامل" required />
+      <input type="text" placeholder="التخصص" required />
+      <input type="email" placeholder="البريد الإلكتروني" required />
+      <input type="text" placeholder="رقم الهوية" required />
+      <input type="date" placeholder="تاريخ الميلاد" required />
+      <input type="password" placeholder="كلمة المرور" required />
+      <input type="password" placeholder="تأكيد كلمة المرور" required />
+      <button type="submit" class="btn btn-primary">تسجيل</button>
+      <div class="success-box">
+        <i class="fas fa-check-circle"></i> شكراً للتسجيل في منصة Grow. طلبك قيد المراجعة وسوف نعلمك عبر الإيميل الشخصي.
+      </div>
+    </form>
+  </main>
+
+  <script>
+    const navbar = document.getElementById("navbar");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add("scrolled");
+      } else {
+        navbar.classList.remove("scrolled");
+      }
+    });
+
+    const tabs = document.querySelectorAll('.tab');
+    const studentForm = document.getElementById('student-form');
+    const teacherForm = document.getElementById('teacher-form');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        if (tab.dataset.tab === 'student') {
+          studentForm.style.display = 'flex';
+          teacherForm.style.display = 'none';
+        } else {
+          studentForm.style.display = 'none';
+          teacherForm.style.display = 'flex';
+        }
+      });
+    });
+
+    document.querySelectorAll('form').forEach(form => {
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        const submitBtn = form.querySelector('.btn-primary');
+        const originalText = submitBtn.innerHTML;
+        
+        // Simulate loading
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التسجيل';
+        submitBtn.disabled = true;
+        
+        setTimeout(() => {
+          const successBox = form.querySelector('.success-box');
+          successBox.style.display = 'block';
+          submitBtn.innerHTML = originalText;
+          submitBtn.disabled = false;
+          
+          // Scroll to success message
+          successBox.scrollIntoView({ behavior: 'smooth' });
+        }, 1500);
+      });
+    });
+  </script>
+</body>
+</html>
